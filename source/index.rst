@@ -1,3 +1,7 @@
+=========
+Uy's Blog
+=========
+
 .. toctree::
    :maxdepth: 2
 
