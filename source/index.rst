@@ -3,7 +3,7 @@ Uy's Blog
 =========
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    articles/index
    about_me

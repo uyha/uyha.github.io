@@ -2,11 +2,7 @@
 Articles
 ========
 
-.. postlist:: 5
-   :location: Pittsburgh
-   :language: en
-   :date: %Y-%m-%d
-   :format: {title} on {date}
-   :list-style: circle
-   :expand: Read more ...
+.. toctree::
+   :maxdepth: 1
 
+   building-a-peripheral-library-with-modern-cpp-part1
