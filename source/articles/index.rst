@@ -3,6 +3,8 @@ Articles
 ========
 
 .. toctree::
-   :maxdepth: 1
+   :caption: Articles
 
-   building-a-peripheral-library-with-modern-cpp-part1
+.. postlist:: 5
+   :format: {title} on {date}
+

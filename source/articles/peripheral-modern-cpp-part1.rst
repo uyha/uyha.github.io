@@ -1,5 +1,4 @@
-.. post:: 2023-03-11
-   :tags: modern c++, i2c, spi, linux
+.. post:: 2023-03-13
 
 ======================================================
 Building a Peripheral Library with Modern C++ - Part 1
