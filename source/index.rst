@@ -6,4 +6,5 @@ Uy's Blog
    :maxdepth: 1
 
    programming/index
+   random/index
    about_me
