@@ -1,4 +1,5 @@
 .. post:: 2023-03-13
+   :category: programming
 
 ======================================================
 Building a Peripheral Library with Modern C++ - Part 1
