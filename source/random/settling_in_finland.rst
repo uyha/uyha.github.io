@@ -38,10 +38,10 @@ the time, but they also accept passport so that wasn't a problem.
 
 Mobile contract
 ===============
-I went to Elisa (no pacticular reason, it was the roaming service provider for my german
-network, and it worked fine so I just went with it), and was planning to have a mobile
-contract but they required the Finnish ID, so I had to go home and wait for the Finnish
-ID to be done.
+I went to Elisa (no pacticular reason, they were the roaming service provider for my
+german network, and it worked fine so I just went with it), and was planning to have a
+mobile contract but they required the Finnish ID, so I had to go home and wait for the
+Finnish ID to be done.
 
 Finnish ID
 ==========
