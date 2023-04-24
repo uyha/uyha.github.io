@@ -1,4 +1,4 @@
-.. post:: 2023-4-08
+.. post:: 2023-04-24
    :category: random
 
 ===================
@@ -26,8 +26,8 @@ Finland working as a specialist, I got my identity code after 2 days. After gett
 identity code, I immediately started the process of opening a bank account, getting my
 Finnish ID, and getting a SIM contract.
 
-Bank Account
-============
+Booking a Bank Account Appointment
+==================================
 Looking around on `r/Finland <https://www.reddit.com/r/Finland/>`_, it seemed like
 Nordea is a bank which is english speakers friendly so I went with it. I called them two
 times. The first time was near lunchtime , no one was picking up after 20 minutes and I
@@ -56,7 +56,24 @@ station early in the morning, around 7:50, and there was already a long line. I 
 to take a number and got number 11. It took around 50 minutes until my turn. The clerk
 told me my Finnish ID would be ready in 8 working days, and when I receive the
 notification about my ID, I could come to collect it at 1 of the last 3 booths without
-having to take a number.
+having to take a number. After 10 days, I received the message saying that my ID is
+ready, I came pick it up, and had another box ticked for settling in Helsinki.
 
 Mobile contract - Take Two
 ==========================
+After I picked up my ID, I went and registered for a mobile contract at Elisa. Having
+the ID, everything went smoothly, and I finally have a finnish phone number.
+
+Bank Account
+============
+On the appointment day, I was expecting to have a bank account after the appointment.
+That was not the case, I went to the bank, and was informed that they will fill out the
+form and submit it for me. After that, I would have to wait (within 2 weeks) for a phone
+call to confirm the process. I was baffled by the complicatedness of this, but well,
+such is life.  After that, luckily, I received the phone call after only 1 day, the lady
+asked a bunch of questions regarding how I am going use this bank account, and said at
+the end that I will receive letters containing my bank information.
+
+.. note::
+   Apparently, if I did not have my ID, I would not be able to get the Netbank service,
+   which is needed for basically anything requiring identification online.
