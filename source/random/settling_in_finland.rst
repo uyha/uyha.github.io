@@ -5,8 +5,8 @@
 Settling in Finland
 ===================
 
-Introduction
-============
+Prologue
+========
 I just moved from Germany to Finland at the end of 03/2023 and I want to note down a few
 things that I did to settle in Finland (Helsinki specifically). Since I have a sister
 living in Helsinki already, accommodation was not a problem for me. Hence, I have
@@ -47,14 +47,14 @@ Finnish ID
 ==========
 It's my first time settling in Finland, I can't do this process online, since
 `Poliisi <https://poliisi.fi/en/frontpage>`_ requires having either a bank account, a
-Finnish ID (comically painful), or Mobile to use their online service. It didn't matter
-anyway since I asked my sister for help and the earliest appointment available was in 3
-months. I decided to go to the police station directly on the next day. Before going to
-the police station, I had to have a passport photo to submit to them. I had one taken at
-Passikuva Suomi, it was done in 5 minutes and it costed 19.90e. I went to the police
-station early in the morning, around 7:50, and there was already a long line. I came in
-to take a number and got number 11. It took around 50 minutes until my turn. The clerk
-told me my Finnish ID would be ready in 8 working days, and when I receive the
+Finnish ID (comically painful), or Mobile ID to use their online service. It didn't
+matter anyway since I asked my sister for help and the earliest appointment available
+was in 3 months. I decided to go to the police station directly on the next day. Before
+going to the police station, I had to have a passport photo to submit to them. I had one
+taken at Passikuva Suomi, it was done in 5 minutes and it costed 19.90e. I went to the
+police station early in the morning, around 7:50, and there was already a long line. I
+came in to take a number and got number 11. It took around 50 minutes until my turn. The
+clerk told me my Finnish ID would be ready in 8 working days, and when I receive the
 notification about my ID, I could come to collect it at 1 of the last 3 booths without
 having to take a number. After 10 days, I received the message saying that my ID is
 ready, I came pick it up, and had another box ticked for settling in Helsinki.
@@ -77,3 +77,17 @@ the end that I will receive letters containing my bank information.
 .. note::
    Apparently, if I did not have my ID, I would not be able to get the Netbank service,
    which is needed for basically anything requiring identification online.
+
+Approximately 10 days after the call, I receive all the documents. However, my phone
+number was wrongly entered so I have to do the verification for Nordea ID by calling
+them. After I got everything sorted out, I can verify myself online and do everything
+like a normal finnish resident.
+
+Epilogue
+========
+All in all, it took me around 1 month to get all the necessary documents and set up the
+essentials services. The most important point I want to emphasize is, if you just came
+to Finland and are trying to establish you life, suck it up, go to the police station
+early, and stand in line to register for you Finnish ID. Because without it, it is
+impossible to do anything else, and you will not to be able to book an appointment
+online, and even if you can, you will have to wait like 3 months.
