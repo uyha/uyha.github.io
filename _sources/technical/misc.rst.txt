@@ -1,0 +1,21 @@
+=============
+Miscellaneous
+=============
+
+SQLite
+======
+
+------------------------------
+Formatting UNIX time in SQLite
+------------------------------
+
+.. code-block:: sql
+
+   SELECT strftime("%F %R:%f", 1713213002.456, "unixepoch", "subsecond");
+
+In SQLite, the ``strftime`` function formats the 2nd argument (time value) according the
+1st argument (the format). The modifiers are from the 3rd argument onwards,
+``"unixepoch"`` indicates that the time value shall be interpreted as UNIX epoch, and
+the ``"subsecond"`` modifiers indicates the time value has millisecond in it, hence
+the time value is a float instead of an int.
+

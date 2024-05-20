@@ -1,0 +1,781 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>DBus and systemd &#8212; Beartama&#39;s Blog  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'technical/dbus-systemd';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Miscellaneous" href="misc.html" />
+    <link rel="prev" title="Technical" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Beartama's Blog</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Technical
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../random/index.html">
+                        Random Stuff
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Technical
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../random/index.html">
+                        Random Stuff
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Technical</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">DBus and systemd</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="dbus-and-systemd">
+<h1>DBus and systemd<a class="headerlink" href="#dbus-and-systemd" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>systemd uses DBus as the mechanism to interact with it. This article introduces just
+enough DBus concepts and the usage of <code class="docutils literal notranslate"><span class="pre">busctl</span></code> to communicate with systemd. These
+concepts should be useful when using DBus libraries.</p>
+</section>
+<section id="concepts">
+<h2>Concepts<a class="headerlink" href="#concepts" title="Link to this heading">#</a></h2>
+<ul>
+<li><p><strong>DBus</strong>: An IPC system.</p></li>
+<li><p><strong>Bus</strong>: The mechanism to reach IPC services. There are 2 kinds of buses:</p>
+<ul class="simple">
+<li><p><strong>System bus</strong>: available for the whole system</p></li>
+<li><p><strong>User bus</strong>: available only to the user</p></li>
+</ul>
+</li>
+<li><p><strong>Interface</strong>: A collection of:</p>
+<ul class="simple">
+<li><p><strong>Signal</strong>: Something to be broadcast and listened.</p></li>
+<li><p><strong>Method</strong>: Analogous to functions in programming languages.</p></li>
+<li><p><strong>Properties</strong>: Analogous to variables in programming languages.</p></li>
+</ul>
+<p>An interface is identified by a name, e.g <code class="docutils literal notranslate"><span class="pre">org.freedesktop.login1.Manager</span></code>. There
+are 3 special interfaces that are always available:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">org.freedesktop.DBus.Introspectable</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">org.freedesktop.DBus.Peer</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">org.freedesktop.DBus.Properties</span></code></p></li>
+</ul>
+</li>
+<li><p><strong>Object</strong>: Analogous to objects in programming languages. An object has one or more
+interfaces. An object is identified by an <strong>object path</strong>, e.g
+<code class="docutils literal notranslate"><span class="pre">/org/freedesktop/login1</span></code>.</p></li>
+<li><p><strong>Service</strong>: A program that offers some IPC API. A service is identified by a name,
+e.g <code class="docutils literal notranslate"><span class="pre">org.freedesktop.login1</span></code>.</p></li>
+</ul>
+</section>
+<section id="interacting-with-systemd-via-busctl">
+<h2>Interacting with systemd via <code class="docutils literal notranslate"><span class="pre">busctl</span></code><a class="headerlink" href="#interacting-with-systemd-via-busctl" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">busctl</span></code> is a program provided by <a class="reference external" href="https://systemd.io/">systemd</a> to interact with DBus. More information can
+be found in its man page.</p>
+<p>The name of systemd service is <code class="docutils literal notranslate"><span class="pre">org.freedesktop.systemd1</span></code>. Using the following command,
+we can check what objects does the systemd service has</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>busctl<span class="w"> </span>tree<span class="w"> </span>org.freedesktop.systemd1
+</pre></div>
+</div>
+<p>The command should give the following output (only the first 5 lines are shown here)</p>
+<blockquote>
+<div><div class="line-block">
+<div class="line">├─ /org</div>
+<div class="line">├─ /org/freedesktop</div>
+<div class="line">├─ /org/freedesktop/systemd1</div>
+<div class="line">├─ /org/freedesktop/systemd1/job</div>
+<div class="line">└─ /org/freedesktop/systemd1/unit</div>
+</div>
+</div></blockquote>
+<p>The <code class="docutils literal notranslate"><span class="pre">/org/freedesktop/systemd1</span></code> object contains the main functionality for interacting
+with systemd. Running the following command</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>busctl<span class="w"> </span>introspect<span class="w"> </span>org.freedesktop.systemd1<span class="w"> </span>/org/freedesktop/systemd1
+</pre></div>
+</div>
+<p>We will see, beside the 3 special interfaces, an interface named
+<code class="docutils literal notranslate"><span class="pre">org.freedesktop.systemd1.Manager</span></code>.</p>
+<p>Using the <code class="docutils literal notranslate"><span class="pre">org.freedesktop.systemd1.Manager</span></code> interface, we can interact with systemd.
+The document for this interface can be retrieved using</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>mae<span class="w"> </span>org.freedesktop.systemd1
+</pre></div>
+</div>
+<p>Or can be read at <a class="reference external" href="https://www.freedesktop.org/software/systemd/man/latest/org.freedesktop.systemd1.html">org.freedesktop.systemd1</a>.</p>
+<section id="example-interacting-with-networkmanager-service">
+<h3>Example: Interacting with <code class="docutils literal notranslate"><span class="pre">NetworkManager.service</span></code><a class="headerlink" href="#example-interacting-with-networkmanager-service" title="Link to this heading">#</a></h3>
+<p>Let’s say we want to the following with <code class="docutils literal notranslate"><span class="pre">NetworkManager.service</span></code>:</p>
+<ul class="simple">
+<li><p>reading its <code class="docutils literal notranslate"><span class="pre">ActiveState</span></code></p></li>
+<li><p>restarting it</p></li>
+<li><p>monitoring its <code class="docutils literal notranslate"><span class="pre">ActiveState</span></code></p></li>
+</ul>
+<p>To do any of this, we first have to know what is the object corresponding to
+<code class="docutils literal notranslate"><span class="pre">NetworkManager.service</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>From now on, we will only interact with the <code class="docutils literal notranslate"><span class="pre">org.freedesktop.systemd1</span></code> DBus service.</p>
+</div>
+<section id="finding-the-object-path">
+<h4>Finding the object path<a class="headerlink" href="#finding-the-object-path" title="Link to this heading">#</a></h4>
+<p>We can do this by</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>busctl<span class="w"> </span>call<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>org.freedesktop.systemd1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>/org/freedesktop/systemd1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>org.freedesktop.systemd1.Manager<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>GetUnit<span class="w"> </span>s<span class="w"> </span>NetworkManager.service
+</pre></div>
+</div>
+<p>Which should give <code class="docutils literal notranslate"><span class="pre">o</span> <span class="pre">&quot;/org/freedesktop/systemd1/unit/NetworkManager_2eservice&quot;</span></code> with
+<code class="docutils literal notranslate"><span class="pre">o</span></code> meaning the result is an object path.</p>
+<p>Now that we know the object path for <code class="docutils literal notranslate"><span class="pre">NetworkManager.service</span></code>, we can inspect it to see
+what we can do with it.</p>
+</section>
+<section id="inspecting-the-object">
+<h4>Inspecting the object<a class="headerlink" href="#inspecting-the-object" title="Link to this heading">#</a></h4>
+<p>To inspect the object, we can run</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>busctl<span class="w"> </span>introspect<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>org.freedesktop.systemd1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>/org/freedesktop/systemd1/unit/NetworkManager_2eservice
+</pre></div>
+</div>
+<p>And see the various interfaces of this object.</p>
+</section>
+<section id="reading-the-activestate-property">
+<h4>Reading the <code class="docutils literal notranslate"><span class="pre">ActiveState</span></code> property<a class="headerlink" href="#reading-the-activestate-property" title="Link to this heading">#</a></h4>
+<p>By inspecting the object, we can see that there is an interface named
+<code class="docutils literal notranslate"><span class="pre">org.freedesktop.systemd1.Unit</span></code> and it has a property called <code class="docutils literal notranslate"><span class="pre">ActiveState</span></code>. We then
+can get the propety by running</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>busctl<span class="w"> </span>get-property<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>org.freedesktop.systemd1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>/org/freedesktop/systemd1/unit/NetworkManager_2eservice<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>org.freedesktop.systemd1.Unit<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ActiveState
+</pre></div>
+</div>
+<p>Which should give a similar result to running</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>systemctl<span class="w"> </span>status<span class="w"> </span>NetworkManager.service
+</pre></div>
+</div>
+</section>
+<section id="restarting-the-service">
+<h4>Restarting the service<a class="headerlink" href="#restarting-the-service" title="Link to this heading">#</a></h4>
+<p>There are 2 ways to restart a systemd service via DBus.</p>
+<p>The first way is to use:</p>
+<ul class="simple">
+<li><p><strong>Object</strong>: <code class="docutils literal notranslate"><span class="pre">/org/freedesktop/systemd1</span></code></p></li>
+<li><p><strong>Interface</strong>: <code class="docutils literal notranslate"><span class="pre">org.freedesktop.systemd1.Manager</span></code></p></li>
+<li><p><strong>Method</strong>: <code class="docutils literal notranslate"><span class="pre">RestartUnit</span></code></p></li>
+</ul>
+<p>This method has the following signature:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RestartUnit</span><span class="p">(</span><span class="ow">in</span> <span class="n">s</span> <span class="n">name</span><span class="p">,</span> <span class="ow">in</span> <span class="n">s</span> <span class="n">mode</span><span class="p">,</span> <span class="n">out</span> <span class="n">o</span> <span class="n">job</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">name</span></code> parameter in this case is <code class="docutils literal notranslate"><span class="pre">NetworkManager.service</span></code>. The mode parameter can
+be one of <code class="docutils literal notranslate"><span class="pre">replace</span></code>, <code class="docutils literal notranslate"><span class="pre">fail</span></code>, <code class="docutils literal notranslate"><span class="pre">isolate</span></code>, <code class="docutils literal notranslate"><span class="pre">ignore-dependencies</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">ignore-requirements</span></code> (more details about this in the document of
+<code class="docutils literal notranslate"><span class="pre">org.freedesktop.systemd1</span></code>, the description of <code class="docutils literal notranslate"><span class="pre">StartUnit</span></code>). Restarting the service
+is done by</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>busctl<span class="w"> </span>call<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>org.freedesktop.systemd1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>/org/freedesktop/systemd1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>org.freedesktop.systemd1.Manager<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>RestartUnit<span class="w"> </span>ss<span class="w"> </span>NetworkManager.service<span class="w"> </span>replace
+</pre></div>
+</div>
+<p>A pop-up asking for your password should appear (unless you’re running as root) and
+the <code class="docutils literal notranslate"><span class="pre">NetworkManager.service</span></code> should then restart (your Wifi will probably disconnect
+and reconnect).</p>
+<p>The second way to this is using</p>
+<ul class="simple">
+<li><p><strong>Object</strong>: <code class="docutils literal notranslate"><span class="pre">/org/freedesktop/systemd1/unit/NetworkManager_2eservice</span></code></p></li>
+<li><p><strong>Interface</strong>: <code class="docutils literal notranslate"><span class="pre">org.freedesktop.systemd1.Unit</span></code></p></li>
+<li><p><strong>Method</strong>: <code class="docutils literal notranslate"><span class="pre">Restart</span></code></p></li>
+</ul>
+<p>This method has the following signature:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Restart</span><span class="p">(</span><span class="ow">in</span> <span class="n">s</span> <span class="n">mode</span><span class="p">,</span> <span class="n">out</span> <span class="n">o</span> <span class="n">job</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">mode</span></code> is same as above. We then restart the service by</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>busctl<span class="w"> </span>call<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>org.freedesktop.systemd1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>/org/freedesktop/systemd1/unit/NetworkManager_2eservice<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>org.freedesktop.systemd1.Unit<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>Restart<span class="w"> </span>s<span class="w"> </span>replace
+</pre></div>
+</div>
+<p>Similar things should then happen as described above.</p>
+</section>
+<section id="monitoring-activestate">
+<h4>Monitoring <code class="docutils literal notranslate"><span class="pre">ActiveState</span></code><a class="headerlink" href="#monitoring-activestate" title="Link to this heading">#</a></h4>
+<p>We cannot directly monitor <code class="docutils literal notranslate"><span class="pre">ActiveState</span></code>. However, by inspecting the
+<code class="docutils literal notranslate"><span class="pre">/org/freedesktop/systemd1/unit/NetworkManager_2eservice</span></code> object, we see that the
+<code class="docutils literal notranslate"><span class="pre">ActiveState</span></code> property has an <cite>emit-change</cite> flag. This means that whenever
+<code class="docutils literal notranslate"><span class="pre">ActiveState</span></code> is updated, it will trigger the <code class="docutils literal notranslate"><span class="pre">PropertiesChanged</span></code> signal of the
+<code class="docutils literal notranslate"><span class="pre">org.freedesktop.DBus.Properties</span></code> interface. To monitor this signal, we run</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>busctl<span class="w"> </span>monitor<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--match<span class="w"> </span><span class="s2">&quot;type=&#39;signal&#39;,\</span>
+<span class="s2">           sender=&#39;org.freedesktop.systemd1&#39;,\</span>
+<span class="s2">           path=&#39;/org/freedesktop/systemd1/unit/NetworkManager_2eservice&#39;,\</span>
+<span class="s2">           interface=&#39;org.freedesktop.DBus.Properties&#39;,\</span>
+<span class="s2">           member=&#39;PropertiesChanged&#39;&quot;</span>
+</pre></div>
+</div>
+<p>We have to specify the signal via the <code class="docutils literal notranslate"><span class="pre">--match</span></code> option (no idea why <code class="docutils literal notranslate"><span class="pre">busctl</span> <span class="pre">monitor</span></code>
+does not have a similar usage to <code class="docutils literal notranslate"><span class="pre">busctl</span> <span class="pre">call</span></code>). The argument for this option is a
+match rule (details at <a class="reference external" href="https://dbus.freedesktop.org/doc/dbus-specification.html#message-bus-routing-match-rules">match rules</a>).</p>
+<p>The match rule here is quite straightforward, we want to monitor a <cite>signal</cite> from</p>
+<ul class="simple">
+<li><p><strong>DBus service</strong>: <code class="docutils literal notranslate"><span class="pre">org.freedesktop.systemd1</span></code></p></li>
+<li><p><strong>Object</strong>: <code class="docutils literal notranslate"><span class="pre">/org/freedesktop/systemd1/unit/NetworkManager_2eservice</span></code></p></li>
+<li><p><strong>Interface</strong>: <code class="docutils literal notranslate"><span class="pre">org.freedesktop.DBus.Properties</span></code></p></li>
+<li><p><strong>Signal</strong>: <code class="docutils literal notranslate"><span class="pre">PropertiesChanged</span></code></p></li>
+</ul>
+<p>However, this does not only monitor the change of the <code class="docutils literal notranslate"><span class="pre">ActiveState</span></code> property. As the
+name suggests, <code class="docutils literal notranslate"><span class="pre">PropertiesChanged</span></code> signal is emitted whenever a property changes. So
+external processing has to done separately to extract <code class="docutils literal notranslate"><span class="pre">ActiveState</span></code> (outside the scope
+of this article).</p>
+</section>
+</section>
+</section>
+<section id="appendix">
+<h2>Appendix<a class="headerlink" href="#appendix" title="Link to this heading">#</a></h2>
+<section id="type-system">
+<h3>Type system<a class="headerlink" href="#type-system" title="Link to this heading">#</a></h3>
+<p>The type system of DBus is represented by a sequence of ASCII characters.</p>
+<table class="table" id="id1">
+<caption><span class="caption-text">Fixed Types</span><a class="headerlink" href="#id1" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 28.9%" />
+<col style="width: 37.8%" />
+<col style="width: 33.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Data Type</p></th>
+<th class="head"><p>ASCII Character</p></th>
+<th class="head"><p>ASCII Decimal</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">byte</span></code></p></td>
+<td><p>y</p></td>
+<td><p>121</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">boolean</span></code></p></td>
+<td><p>b</p></td>
+<td><p>98</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">int16</span></code></p></td>
+<td><p>n</p></td>
+<td><p>110</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">uint16</span></code></p></td>
+<td><p>q</p></td>
+<td><p>113</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">int32</span></code></p></td>
+<td><p>i</p></td>
+<td><p>105</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">uint32</span></code></p></td>
+<td><p>u</p></td>
+<td><p>117</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">int64</span></code></p></td>
+<td><p>x</p></td>
+<td><p>120</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">uint64</span></code></p></td>
+<td><p>t</p></td>
+<td><p>116</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">double</span></code></p></td>
+<td><p>d</p></td>
+<td><p>100</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">unix_fd</span></code></p></td>
+<td><p>h</p></td>
+<td><p>104</p></td>
+</tr>
+</tbody>
+</table>
+<table class="table" id="id2">
+<caption><span class="caption-text">String-like Types</span><a class="headerlink" href="#id2" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 34.7%" />
+<col style="width: 34.7%" />
+<col style="width: 30.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Data Type</p></th>
+<th class="head"><p>ASCII Character</p></th>
+<th class="head"><p>ASCII Decimal</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">string</span></code></p></td>
+<td><p>s</p></td>
+<td><p>115</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">object_path</span></code></p></td>
+<td><p>o</p></td>
+<td><p>111</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">signature</span></code></p></td>
+<td><p>g</p></td>
+<td><p>103</p></td>
+</tr>
+</tbody>
+</table>
+<p>Refer to <a class="reference external" href="https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-marshaling-object-path">marshaling object path</a>  and <a class="reference external" href="https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-marshaling-signature">marshaling signature</a> to check the
+specifications for object_path and signature.</p>
+<table class="table" id="id3">
+<caption><span class="caption-text">Container Types</span><a class="headerlink" href="#id3" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 34.7%" />
+<col style="width: 34.7%" />
+<col style="width: 30.6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Data Type</p></th>
+<th class="head"><p>ASCII Character</p></th>
+<th class="head"><p>ASCII Decimal</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">array</span></code></p></td>
+<td><p>a</p></td>
+<td><p>97</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">struct</span></code></p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">variant</span></code></p></td>
+<td><p>v</p></td>
+<td><p>118</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dict_entry</span></code></p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>For struct, <code class="docutils literal notranslate"><span class="pre">()</span></code> is used to denote it. For example, <code class="docutils literal notranslate"><span class="pre">(ii)</span></code> is a struct of 2
+<code class="docutils literal notranslate"><span class="pre">int32</span></code>.</p>
+<p>For dict_entry, <code class="docutils literal notranslate"><span class="pre">{}</span></code> is used to denote it. It can only appear as an array type. It
+must have exactly 2 single types inside it. The first type must be a basic type
+(fixed or string-like types). For example, <code class="docutils literal notranslate"><span class="pre">a{ii}</span></code> is an array of dict_entry whose
+key and value are <code class="docutils literal notranslate"><span class="pre">int32</span></code>.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Technical</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="misc.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Miscellaneous</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concepts">Concepts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interacting-with-systemd-via-busctl">Interacting with systemd via <code class="docutils literal notranslate"><span class="pre">busctl</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-interacting-with-networkmanager-service">Example: Interacting with <code class="docutils literal notranslate"><span class="pre">NetworkManager.service</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-the-object-path">Finding the object path</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-the-object">Inspecting the object</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-activestate-property">Reading the <code class="docutils literal notranslate"><span class="pre">ActiveState</span></code> property</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#restarting-the-service">Restarting the service</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#monitoring-activestate">Monitoring <code class="docutils literal notranslate"><span class="pre">ActiveState</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix">Appendix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-system">Type system</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/technical/dbus-systemd.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

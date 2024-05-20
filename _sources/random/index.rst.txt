@@ -1,0 +1,9 @@
+============
+Random Stuff
+============
+
+.. toctree::
+   :titlesonly:
+
+   misc
+

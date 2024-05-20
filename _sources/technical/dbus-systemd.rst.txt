@@ -1,0 +1,303 @@
+================
+DBus and systemd
+================
+
+Introduction
+============
+systemd uses DBus as the mechanism to interact with it. This article introduces just
+enough DBus concepts and the usage of ``busctl`` to communicate with systemd. These
+concepts should be useful when using DBus libraries.
+
+Concepts
+========
+
+- **DBus**: An IPC system.
+- **Bus**: The mechanism to reach IPC services. There are 2 kinds of buses:
+
+  - **System bus**: available for the whole system
+  - **User bus**: available only to the user
+
+- **Interface**: A collection of:
+
+  - **Signal**: Something to be broadcast and listened.
+  - **Method**: Analogous to functions in programming languages.
+  - **Properties**: Analogous to variables in programming languages.
+
+  An interface is identified by a name, e.g ``org.freedesktop.login1.Manager``. There
+  are 3 special interfaces that are always available:
+
+  - ``org.freedesktop.DBus.Introspectable``
+  - ``org.freedesktop.DBus.Peer``
+  - ``org.freedesktop.DBus.Properties``
+
+- **Object**: Analogous to objects in programming languages. An object has one or more
+  interfaces. An object is identified by an **object path**, e.g
+  ``/org/freedesktop/login1``.
+
+- **Service**: A program that offers some IPC API. A service is identified by a name,
+  e.g ``org.freedesktop.login1``.
+
+
+Interacting with systemd via ``busctl``
+=======================================
+``busctl`` is a program provided by systemd_ to interact with DBus. More information can
+be found in its man page.
+
+The name of systemd service is ``org.freedesktop.systemd1``. Using the following command,
+we can check what objects does the systemd service has
+
+.. code-block:: sh
+
+   busctl tree org.freedesktop.systemd1
+
+The command should give the following output (only the first 5 lines are shown here)
+
+  | ├─ /org
+  | ├─ /org/freedesktop
+  | ├─ /org/freedesktop/systemd1
+  | ├─ /org/freedesktop/systemd1/job
+  | └─ /org/freedesktop/systemd1/unit
+
+The ``/org/freedesktop/systemd1`` object contains the main functionality for interacting
+with systemd. Running the following command
+
+.. code-block:: sh
+
+   busctl introspect org.freedesktop.systemd1 /org/freedesktop/systemd1
+
+We will see, beside the 3 special interfaces, an interface named
+``org.freedesktop.systemd1.Manager``.
+
+Using the ``org.freedesktop.systemd1.Manager`` interface, we can interact with systemd.
+The document for this interface can be retrieved using
+
+.. code-block:: sh
+
+   mae org.freedesktop.systemd1
+
+Or can be read at `org.freedesktop.systemd1`_.
+
+----------------------------------------------------
+Example: Interacting with ``NetworkManager.service``
+----------------------------------------------------
+Let's say we want to the following with ``NetworkManager.service``:
+
+- reading its ``ActiveState``
+- restarting it
+- monitoring its ``ActiveState``
+
+To do any of this, we first have to know what is the object corresponding to
+``NetworkManager.service``.
+
+.. note::
+   From now on, we will only interact with the ``org.freedesktop.systemd1`` DBus service.
+
+Finding the object path
+-----------------------
+We can do this by
+
+.. code-block:: sh
+
+   busctl call \
+     org.freedesktop.systemd1 \
+     /org/freedesktop/systemd1 \
+     org.freedesktop.systemd1.Manager \
+     GetUnit s NetworkManager.service
+
+Which should give ``o "/org/freedesktop/systemd1/unit/NetworkManager_2eservice"`` with
+``o`` meaning the result is an object path.
+
+Now that we know the object path for ``NetworkManager.service``, we can inspect it to see
+what we can do with it.
+
+
+Inspecting the object
+---------------------
+To inspect the object, we can run
+
+.. code-block:: sh
+
+   busctl introspect \
+     org.freedesktop.systemd1 \
+     /org/freedesktop/systemd1/unit/NetworkManager_2eservice
+
+And see the various interfaces of this object.
+
+
+Reading the ``ActiveState`` property
+------------------------------------
+By inspecting the object, we can see that there is an interface named
+``org.freedesktop.systemd1.Unit`` and it has a property called ``ActiveState``. We then
+can get the propety by running
+
+.. code-block:: sh
+
+   busctl get-property \
+     org.freedesktop.systemd1 \
+     /org/freedesktop/systemd1/unit/NetworkManager_2eservice \
+     org.freedesktop.systemd1.Unit \
+     ActiveState
+
+Which should give a similar result to running
+
+.. code-block:: sh
+
+   systemctl status NetworkManager.service
+
+
+Restarting the service
+----------------------
+There are 2 ways to restart a systemd service via DBus.
+
+The first way is to use:
+
+- **Object**: ``/org/freedesktop/systemd1``
+- **Interface**: ``org.freedesktop.systemd1.Manager``
+- **Method**: ``RestartUnit``
+
+This method has the following signature:
+
+.. code-block::
+
+   RestartUnit(in s name, in s mode, out o job)
+
+The ``name`` parameter in this case is ``NetworkManager.service``. The mode parameter can
+be one of ``replace``, ``fail``, ``isolate``, ``ignore-dependencies``, or
+``ignore-requirements`` (more details about this in the document of
+``org.freedesktop.systemd1``, the description of ``StartUnit``). Restarting the service
+is done by
+
+.. code-block:: sh
+
+   busctl call \
+     org.freedesktop.systemd1 \
+     /org/freedesktop/systemd1 \
+     org.freedesktop.systemd1.Manager \
+     RestartUnit ss NetworkManager.service replace
+
+A pop-up asking for your password should appear (unless you're running as root) and
+the ``NetworkManager.service`` should then restart (your Wifi will probably disconnect
+and reconnect).
+
+The second way to this is using
+
+- **Object**: ``/org/freedesktop/systemd1/unit/NetworkManager_2eservice``
+- **Interface**: ``org.freedesktop.systemd1.Unit``
+- **Method**: ``Restart``
+
+This method has the following signature:
+
+.. code-block::
+
+   Restart(in s mode, out o job);
+
+The ``mode`` is same as above. We then restart the service by
+
+.. code-block:: sh
+
+   busctl call \
+     org.freedesktop.systemd1 \
+     /org/freedesktop/systemd1/unit/NetworkManager_2eservice \
+     org.freedesktop.systemd1.Unit \
+     Restart s replace
+
+Similar things should then happen as described above.
+
+Monitoring ``ActiveState``
+--------------------------
+We cannot directly monitor ``ActiveState``. However, by inspecting the
+``/org/freedesktop/systemd1/unit/NetworkManager_2eservice`` object, we see that the
+``ActiveState`` property has an `emit-change` flag. This means that whenever
+``ActiveState`` is updated, it will trigger the ``PropertiesChanged`` signal of the
+``org.freedesktop.DBus.Properties`` interface. To monitor this signal, we run
+
+.. code-block:: sh
+
+   sudo busctl monitor \
+     --match "type='signal',\
+              sender='org.freedesktop.systemd1',\
+              path='/org/freedesktop/systemd1/unit/NetworkManager_2eservice',\
+              interface='org.freedesktop.DBus.Properties',\
+              member='PropertiesChanged'"
+
+We have to specify the signal via the ``--match`` option (no idea why ``busctl monitor``
+does not have a similar usage to ``busctl call``). The argument for this option is a
+match rule (details at `match rules`_).
+
+The match rule here is quite straightforward, we want to monitor a `signal` from
+
+- **DBus service**: ``org.freedesktop.systemd1``
+- **Object**: ``/org/freedesktop/systemd1/unit/NetworkManager_2eservice``
+- **Interface**: ``org.freedesktop.DBus.Properties``
+- **Signal**: ``PropertiesChanged``
+
+However, this does not only monitor the change of the ``ActiveState`` property. As the
+name suggests, ``PropertiesChanged`` signal is emitted whenever a property changes. So
+external processing has to done separately to extract ``ActiveState`` (outside the scope
+of this article).
+
+Appendix
+========
+
+-----------
+Type system
+-----------
+The type system of DBus is represented by a sequence of ASCII characters.
+
+.. table:: Fixed Types
+   :widths: grid
+
+   ============= ================= ===============
+    Data Type     ASCII Character   ASCII Decimal
+   ============= ================= ===============
+    ``byte``      y                   121
+    ``boolean``   b                    98
+    ``int16``     n                   110
+    ``uint16``    q                   113
+    ``int32``     i                   105
+    ``uint32``    u                   117
+    ``int64``     x                   120
+    ``uint64``    t                   116
+    ``double``    d                   100
+    ``unix_fd``   h                   104
+   ============= ================= ===============
+
+.. table:: String-like Types
+   :widths: grid
+
+   ================= ================= ===============
+    Data Type         ASCII Character   ASCII Decimal
+   ================= ================= ===============
+    ``string``        s                 115
+    ``object_path``   o                 111
+    ``signature``     g                 103
+   ================= ================= ===============
+
+Refer to `marshaling object path`_  and `marshaling signature`_ to check the
+specifications for object_path and signature.
+
+.. table:: Container Types
+   :widths: grid
+
+   ================= ================= ===============
+    Data Type         ASCII Character   ASCII Decimal
+   ================= ================= ===============
+    ``array``         a                  97
+    ``struct``
+    ``variant``       v                 118
+    ``dict_entry``
+   ================= ================= ===============
+
+For struct, ``()`` is used to denote it. For example, ``(ii)`` is a struct of 2
+``int32``.
+
+For dict_entry, ``{}`` is used to denote it. It can only appear as an array type. It
+must have exactly 2 single types inside it. The first type must be a basic type
+(fixed or string-like types). For example, ``a{ii}`` is an array of dict_entry whose
+key and value are ``int32``.
+
+.. _systemd: https://systemd.io/
+.. _org.freedesktop.systemd1: https://www.freedesktop.org/software/systemd/man/latest/org.freedesktop.systemd1.html
+.. _match rules: https://dbus.freedesktop.org/doc/dbus-specification.html#message-bus-routing-match-rules
+.. _marshaling object path: https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-marshaling-object-path
+.. _marshaling signature: https://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-marshaling-signature

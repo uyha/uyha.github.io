@@ -1,0 +1,9 @@
+===============
+Beartama's Blog
+===============
+
+.. toctree::
+   :titlesonly:
+
+   technical/index
+   random/index
