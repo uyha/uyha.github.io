@@ -142,7 +142,7 @@ Which should give a similar result to running
 
 .. code-block:: sh
 
-   systemctl status NetworkManager.service
+   systemctl show -P ActiveState NetworkManager.service
 
 
 Restarting the service
