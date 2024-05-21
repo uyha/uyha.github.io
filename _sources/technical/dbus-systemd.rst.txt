@@ -73,7 +73,7 @@ The document for this interface can be retrieved using
 
 .. code-block:: sh
 
-   mae org.freedesktop.systemd1
+   man org.freedesktop.systemd1
 
 Or can be read at `org.freedesktop.systemd1`_.
 
