@@ -80,7 +80,7 @@ Or can be read at `org.freedesktop.systemd1`_.
 ----------------------------------------------------
 Example: Interacting with ``NetworkManager.service``
 ----------------------------------------------------
-Let's say we want to the following with ``NetworkManager.service``:
+Let's say we want to do the following with ``NetworkManager.service``:
 
 - reading its ``ActiveState``
 - restarting it
