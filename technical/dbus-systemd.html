@@ -335,6 +335,11 @@ concepts should be useful when using DBus libraries.</p>
 <li><p><strong>User bus</strong>: available only to the user</p></li>
 </ul>
 </li>
+<li><p><strong>Service</strong>: A program that offers some IPC API. A service is identified by a name,
+e.g <code class="docutils literal notranslate"><span class="pre">org.freedesktop.login1</span></code>.</p></li>
+<li><p><strong>Object</strong>: Analogous to objects in programming languages. An object has one or more
+interfaces. An object is identified by an <strong>object path</strong>, e.g
+<code class="docutils literal notranslate"><span class="pre">/org/freedesktop/login1</span></code>.</p></li>
 <li><p><strong>Interface</strong>: A collection of:</p>
 <ul class="simple">
 <li><p><strong>Signal</strong>: Something to be broadcast and listened.</p></li>
@@ -349,11 +354,6 @@ are 3 special interfaces that are always available:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">org.freedesktop.DBus.Properties</span></code></p></li>
 </ul>
 </li>
-<li><p><strong>Object</strong>: Analogous to objects in programming languages. An object has one or more
-interfaces. An object is identified by an <strong>object path</strong>, e.g
-<code class="docutils literal notranslate"><span class="pre">/org/freedesktop/login1</span></code>.</p></li>
-<li><p><strong>Service</strong>: A program that offers some IPC API. A service is identified by a name,
-e.g <code class="docutils literal notranslate"><span class="pre">org.freedesktop.login1</span></code>.</p></li>
 </ul>
 </section>
 <section id="interacting-with-systemd-via-busctl">
