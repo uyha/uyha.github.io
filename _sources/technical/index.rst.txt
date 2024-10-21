@@ -6,4 +6,5 @@ Technical
    :titlesonly:
 
    dbus-systemd
+   cheat-sheet
    misc
