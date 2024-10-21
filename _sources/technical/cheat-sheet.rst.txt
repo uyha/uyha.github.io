@@ -5,8 +5,8 @@ Cheat sheets
 systemd's dependencies
 ======================
 
-``A`` has ``$X=B`` where ``$X`` is one of ``Wants``, ``Requires``, ``Requisite``,
-``BindsTo``, ``PartOf``, and ``Upholds``.
+``A`` has ``$X=B`` in its ``[Unit]`` section where ``$X`` is one of ``Wants``,
+``Requires``, ``Requisite``, ``BindsTo``, ``PartOf``, and ``Upholds``.
 
 +--------------------------+--------------+-------------+-------------------------------------------------+
 |                          | ``A`` starts | ``B`` fails | ``B`` stops / restarts                          |
