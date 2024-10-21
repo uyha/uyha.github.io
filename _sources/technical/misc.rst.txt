@@ -19,3 +19,13 @@ In SQLite, the ``strftime`` function formats the 2nd argument (time value) accor
 the ``"subsecond"`` modifiers indicates the time value has millisecond in it, hence
 the time value is a float instead of an int.
 
+Algorithms
+==========
+
+----------
+O, Ω and Θ
+----------
+
+- O is upper bound
+- Ω is lower bound
+- Θ is tight bound
