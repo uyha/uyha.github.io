@@ -327,7 +327,7 @@ document.write(`
 <h1>Cheat sheets<a class="headerlink" href="#cheat-sheets" title="Link to this heading">#</a></h1>
 <section id="systemd-s-dependencies">
 <h2>systemd’s dependencies<a class="headerlink" href="#systemd-s-dependencies" title="Link to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">A</span></code> has <code class="docutils literal notranslate"><span class="pre">$X=B</span></code> in its <code class="docutils literal notranslate"><span class="pre">[Unit]</span></code> section where <code class="docutils literal notranslate"><span class="pre">$X</span></code> is one of <code class="docutils literal notranslate"><span class="pre">Wants</span></code>,
+<p><code class="docutils literal notranslate"><span class="pre">A</span></code> has <code class="docutils literal notranslate"><span class="pre">X=B</span></code> in its <code class="docutils literal notranslate"><span class="pre">[Unit]</span></code> section where <code class="docutils literal notranslate"><span class="pre">X</span></code> is one of <code class="docutils literal notranslate"><span class="pre">Wants</span></code>,
 <code class="docutils literal notranslate"><span class="pre">Requires</span></code>, <code class="docutils literal notranslate"><span class="pre">Requisite</span></code>, <code class="docutils literal notranslate"><span class="pre">BindsTo</span></code>, <code class="docutils literal notranslate"><span class="pre">PartOf</span></code>, and <code class="docutils literal notranslate"><span class="pre">Upholds</span></code>.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -372,15 +372,23 @@ document.write(`
 <td><p><code class="docutils literal notranslate"><span class="pre">A</span></code> stops / restarts</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">A</span></code> stops / restarts</p></td>
 </tr>
+<tr class="row-even"><td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">PartOf</span></code></p></td>
+<td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">A</span></code> stops / restarts</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">A</span></code> stops / restarts</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p><code class="docutils literal notranslate"><span class="pre">Upholds</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">B</span></code> is
+kept alive</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 </div>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Requisite</span></code>: <code class="docutils literal notranslate"><span class="pre">A</span></code> starts normally if <code class="docutils literal notranslate"><span class="pre">B</span></code> is already running, fails
-otherwise.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">PartOf</span></code>: <code class="docutils literal notranslate"><span class="pre">B</span></code> stops / restart -&gt; <code class="docutils literal notranslate"><span class="pre">A</span></code> stops / restarts</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Upholds</span></code>: <code class="docutils literal notranslate"><span class="pre">A</span></code> starts -&gt; <code class="docutils literal notranslate"><span class="pre">B</span></code> is kept active</p></li>
-</ul>
+<p><code class="docutils literal notranslate"><span class="pre">Requisite</span></code>: <code class="docutils literal notranslate"><span class="pre">A</span></code> starts normally if <code class="docutils literal notranslate"><span class="pre">B</span></code> is already running, fails otherwise.</p>
 </section>
 </section>
 

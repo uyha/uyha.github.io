@@ -5,7 +5,7 @@ Cheat sheets
 systemd's dependencies
 ======================
 
-``A`` has ``$X=B`` in its ``[Unit]`` section where ``$X`` is one of ``Wants``,
+``A`` has ``X=B`` in its ``[Unit]`` section where ``X`` is one of ``Wants``,
 ``Requires``, ``Requisite``, ``BindsTo``, ``PartOf``, and ``Upholds``.
 
 +--------------------------+--------------+-------------+-------------------------------------------------+
@@ -23,10 +23,10 @@ systemd's dependencies
 | ``BindsTo``  +-----------+--------------+-------------+------------------------+------------------------+
 |              |           | ``B`` starts | ``A`` exits | ``A`` stops / restarts | ``A`` stops / restarts |
 +--------------+-----------+--------------+-------------+------------------------+------------------------+
+| ``PartOf``               |              |             | ``A`` stops / restarts | ``A`` stops / restarts |
++--------------------------+--------------+-------------+------------------------+------------------------+
+| ``Upholds``              | ``B`` is     |             |                        |                        |
+|                          | kept alive   |             |                        |                        |
++--------------------------+--------------+-------------+------------------------+------------------------+
 
-- ``Requisite``: ``A`` starts normally if ``B`` is already running, fails
-  otherwise.
-
-- ``PartOf``: ``B`` stops / restart -> ``A`` stops / restarts
-
-- ``Upholds``: ``A`` starts -> ``B`` is kept active
+``Requisite``: ``A`` starts normally if ``B`` is already running, fails otherwise.
